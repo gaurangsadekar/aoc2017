@@ -40,12 +40,12 @@ object Day3 {
   def solution2(target: Int) = {
     def spiral(grid: Grid, prev: Coordinate, direction: Coordinate, maxPos: Int): Int = {
       val (current, nextMaxPos) = if (grid.isBottomRightCorner(prev, maxPos))
-        prev.move(Coordinate(1, 0)) -> (maxPos + 1)
+        prev.move(Coordinate(1, 0)) -> (maxPos + 1) // add another spiral. Adds another coordinate depth
       else
-        prev.move(direction) -> maxPos
+        prev.move(direction) -> maxPos // chug along
 
       val nextDirection = if (grid.isOutOfBounds(current.move(direction), nextMaxPos)) {
-        grid.nextCounterClockWiseDirection(direction)
+        grid.nextCounterClockWiseDirection(direction) // turn direction in the same spiral
       } else direction
 
       val currentSum = grid.coordinateSum(current)
