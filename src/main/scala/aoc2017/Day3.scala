@@ -67,7 +67,6 @@ object Day3 {
     }
 
     def nextCounterClockWiseDirection(direction: Coordinate) = Coordinate(-direction.y, direction.x)
-    }
 
     val neighbors = Seq(
       Coordinate(1, 0),
