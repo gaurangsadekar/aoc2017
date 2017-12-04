@@ -1,10 +1,12 @@
 package aoc2017
 
+import collection.mutable
+
 object Day3 {
   // total time O(lgn), no extra space
   def solution1(num: Int): Int = {
     val maxDist = findNearestSquare(num, 1)
-    manhattanDistance(num, maxDist * maxDist, maxDist, maxDist - 1)
+    manhattanDistance(num, maxDist, maxDist - 1)
   }
 
   /*
@@ -20,7 +22,7 @@ object Day3 {
     go through numbers from prevSquare to maxSquare (meaning numbers only in the outer grid of the spiral)
     and compute the Manhattan distance based on the position in the grid
    */
-  def manhattanDistance(numTarget: Int, maxNum: Int, nearestSquare: Int, maxPosition: Int) = {
+  def manhattanDistance(numTarget: Int, nearestSquare: Int, maxPosition: Int) = {
     def getManhattanDistance(numCurrent: Int, currentDistance: Int, pos: Int): Int = {
       if (numTarget == numCurrent) currentDistance
       else {
@@ -32,5 +34,62 @@ object Day3 {
 
     val prevMaxDist = nearestSquare - 2
     getManhattanDistance(prevMaxDist * prevMaxDist + 1, prevMaxDist, 1)
+  }
+
+
+  def solution2(target: Int) = {
+    def spiral(grid: Grid, prev: Coordinate, direction: Coordinate, maxPos: Int) = {
+      if (grid.isBottomRightCorner(prev, maxPos)) {
+        val current = prev.move(Coordinate(1, 0))
+      }
+      else {
+        val current = prev.move(direction)
+        if (grid.isOutOfBounds(current.move(direction), maxPos)) {
+          val nextDirection = grid.nextCounterClockWiseDirection(direction)
+        }
+      }
+    }
+
+    spiral(new Grid(), Coordinate(0, 0), 1)
+  }
+
+  class Grid {
+    val state = mutable.Map(Coordinate(0, 0) -> 1)
+
+    def isOutOfBounds(coordinate: Coordinate, maxPos: Int) = {
+      Math.max(Math.abs(coordinate.x), Math.abs(coordinate.y)) > maxPos
+    }
+
+    def isBottomRightCorner(coordinate: Coordinate, maxPos: Int) = {
+      coordinate.x == maxPos && coordinate.y == -maxPos
+    }
+
+    def nextCounterClockWiseDirection(direction: Coordinate) = direction match {
+      case Coordinate(1, 0) => Coordinate(0, 1)
+      case Coordinate(0, 1) => Coordinate(-1, 0)
+      case Coordinate(-1, 0) => Coordinate(0, -1)
+      case Coordinate(0, -1) => Coordinate(1, 0)
+    }
+
+    val neighbors = Seq(
+      Coordinate(1, 0),
+      Coordinate(1, 1),
+      Coordinate(0, 1),
+      Coordinate(-1, 1),
+      Coordinate(-1, 0),
+      Coordinate(-1, -1),
+      Coordinate(0, -1),
+      Coordinate(1, -1)
+    )
+
+    def coordinateSum(coordinate: Coordinate) = {
+      neighbors.map(coordinate.move).flatMap(state.get).sum
+    }
+  }
+
+  case class Coordinate(x: Int, y: Int) {
+    def move(direction: Coordinate) = {
+      Coordinate(x + direction.x, y + direction.y)
+    }
   }
 }
