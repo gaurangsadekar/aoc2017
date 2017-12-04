@@ -51,7 +51,7 @@ object Day3 {
       val currentSum = grid.coordinateSum(current)
       if (currentSum > target) currentSum
       else {
-        grid.state + (current -> currentSum)
+        grid.state += (current -> currentSum)
         spiral(grid, current, nextDirection, nextMaxPos)
       }
     }

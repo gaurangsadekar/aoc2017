@@ -13,6 +13,6 @@ object Driver extends App {
 
   val day3Input = 277678
 //  println(s"Day 3 a: ${Day3.solution1(day3Input)}")
-  println(s"Day 3 b: ${Day3.solution2(4)}")
+  println(s"Day 3 b: ${Day3.solution2(day3Input)}")
 
 }
