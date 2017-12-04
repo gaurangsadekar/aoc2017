@@ -38,19 +38,21 @@ object Day3 {
 
 
   def solution2(target: Int) = {
-    def spiral(grid: Grid, prev: Coordinate, direction: Coordinate, maxPos: Int) = {
-      if (grid.isBottomRightCorner(prev, maxPos)) {
-        val current = prev.move(Coordinate(1, 0))
-      }
-      else {
-        val current = prev.move(direction)
-        if (grid.isOutOfBounds(current.move(direction), maxPos)) {
-          val nextDirection = grid.nextCounterClockWiseDirection(direction)
-        }
-      }
+    def spiral(grid: Grid, prev: Coordinate, direction: Coordinate, maxPos: Int): Int = {
+      val (current, nextMaxPos) = if (grid.isBottomRightCorner(prev, maxPos))
+        prev.move(Coordinate(1, 0)) -> (maxPos + 2)
+      else
+        prev.move(direction) -> maxPos
+
+      val nextDirection = if (grid.isOutOfBounds(current.move(direction), nextMaxPos)) {
+        grid.nextCounterClockWiseDirection(direction)
+      } else direction
+
+      grid.state + (current -> grid.coordinateSum(current))
+      spiral(grid, current, nextDirection, nextMaxPos)
     }
 
-    spiral(new Grid(), Coordinate(0, 0), 1)
+    spiral(new Grid(), Coordinate(0, 0), Coordinate(1, 0), 1)
   }
 
   class Grid {
@@ -64,11 +66,7 @@ object Day3 {
       coordinate.x == maxPos && coordinate.y == -maxPos
     }
 
-    def nextCounterClockWiseDirection(direction: Coordinate) = direction match {
-      case Coordinate(1, 0) => Coordinate(0, 1)
-      case Coordinate(0, 1) => Coordinate(-1, 0)
-      case Coordinate(-1, 0) => Coordinate(0, -1)
-      case Coordinate(0, -1) => Coordinate(1, 0)
+    def nextCounterClockWiseDirection(direction: Coordinate) = Coordinate(-direction.y, direction.x)
     }
 
     val neighbors = Seq(
