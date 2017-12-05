@@ -15,7 +15,11 @@ object Driver extends App {
 //  println(s"Day 3 a: ${Day3.solution1(day3Input)}")
 //  println(s"Day 3 b: ${Day3.solution2(day3Input)}")
 
-  val day4Input = Source.fromFile("src/main/resources/input-day4.txt").getLines().toSeq
-  println(s"Day 4 a: ${Day4.solution1(day4Input)}")
-  println(s"Day 4 b: ${Day4.solution2(day4Input)}")
+//  val day4Input = Source.fromFile("src/main/resources/input-day4.txt").getLines().toSeq
+//  println(s"Day 4 a: ${Day4.solution1(day4Input)}")
+//  println(s"Day 4 b: ${Day4.solution2(day4Input)}")
+
+  val day5Input = Source.fromFile("src/main/resources/input-day5.txt").getLines().toArray.map(_.toInt)
+  println(s"Day 5 a: ${Day5.solution1(day5Input)}")
+  println(s"Day 5 b: ${Day5.solution2(day5Input)}")
 }
