@@ -27,5 +27,8 @@ object Driver extends App {
 //  println(s"Day 6 a: ${Day6.solution1(day6Input)}")
 //  println(s"Day 6 b: ${Day6.solution2(day6Input)}")
 
-  val day7Input = Source.fromFile("src/main/resources/input-day7.txt").getLines()
+  val day7Input = Source.fromFile("src/main/resources/input-day7.txt").getLines().toSeq
+    println(s"Day 7 a: ${Day7.solution1(day7Input)}")
+  //  println(s"Day 7 b: ${Day7.solution2(day7Input)}")
+
 }
