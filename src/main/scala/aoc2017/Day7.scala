@@ -13,6 +13,18 @@ object Day7 {
 
   val ARROW = "->"
   val nodeRegex = raw"(\w+) \((\d+)\)".r
+  val nodeWithChildrenRegex = """(\w+) \((\d+)\)(?: -> (\w+(?:, \w+)*))?""".r
+
+  def parseGraph2(nodeStrs: Seq[String]): Map[String, Node] = {
+    nodeStrs.map {
+      case nodeWithChildrenRegex(nodeId, weightStr, nullableChildrenStr) =>
+        Node(
+          nodeId,
+          weightStr.toInt,
+          Option(nullableChildrenStr)
+        )
+    }
+  }
 
   def parseGraph(nodeStrs: Seq[String]): Map[String, Node] = {
     val (nodesWithChildren, nodesWithoutChildren) = nodeStrs.partition(_.contains(ARROW))
