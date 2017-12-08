@@ -21,8 +21,6 @@ object Condition {
       case "!=" => _ != operand
     })
   }
-
-
 }
 
 case class Instruction(
@@ -70,7 +68,7 @@ object Day8 {
     parseFile(instructionStrs)
       .foldLeft(Map.empty[String, Int]){ case (registerMap, instruction) =>
         instruction(registerMap).fold(registerMap)(value => registerMap + (instruction.regName -> value))
-      }.maxBy(_._2)._2
+      }.values.max
   }
 
   def solution2(instructionStrs: Seq[String]): Int = {
