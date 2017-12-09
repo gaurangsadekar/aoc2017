@@ -3,63 +3,42 @@ package aoc2017
 object Day9 {
   def solution1(input: Iterator[Char]) = {
     def countScore(current: Char, currentScore: Long, totalScore: Long, garbage: Boolean): Long = {
-      val (newCurrentScore, newTotalScore, newGarbage) = if (garbage) {
+      val (newCurrentScore, newTotalScore) = if (!garbage) {
         current match {
-          case '!' => {
-            val _ = input.next()
-            (currentScore, totalScore, garbage)
-          }
-          case '>' =>
-            (currentScore, totalScore, false)
-          case _ => (currentScore, totalScore, garbage)
+          case '{' => (currentScore + 1, totalScore)
+          case '}' => (currentScore - 1, totalScore + currentScore)
+          case _ => (currentScore, totalScore)
         }
-      } else {
-        current match {
-          case '{' => (currentScore + 1, totalScore, garbage)
-          case '}' => (currentScore - 1, totalScore + currentScore, garbage)
-          case '<' => (currentScore, totalScore, true)
-          case '!' => {
-            val _ = input.next() // throw away immediate next char, side effect
-            (currentScore, totalScore, garbage)
-          }
-          case _ => (currentScore, totalScore, garbage)
-        }
-      }
-      if (!input.hasNext) newTotalScore
-      else {
-        countScore(input.next(), newCurrentScore, newTotalScore, newGarbage)
-      }
+      } else (currentScore, totalScore)
+      if (input.hasNext) {
+        countScore(
+          current = {
+            if (current == '!') {
+              val _ = input.next
+            }
+            input.next
+          },
+          currentScore = newCurrentScore,
+          totalScore = newTotalScore,
+          garbage = if (current == '<') true else if (current == '>') false else garbage
+        )
+      } else newTotalScore
     }
     countScore(input.next(), 0, 0, false)
   }
 
   def solution2(input: Iterator[Char]) = {
-    def countInGarbage(current: Char, currentCount: Long, totalCount: Long, garbage: Boolean): Long = {
-      val (newCurrentCount, newTotalCount, newGarbage) = if (garbage) {
-        current match {
-          case '!' => {
-            val _ = input.next()
-            (currentCount, totalCount, garbage)
-          }
-          case '>' =>
-            (0L, totalCount + currentCount, false)
-          case _ => (currentCount + 1, totalCount, garbage)
-        }
-      } else {
-        current match {
-          case '<' => (currentCount, totalCount, true)
-          case '!' => {
-            val _ = input.next() // throw away immediate next char, side effect
-            (currentCount, totalCount, garbage)
-          }
-          case _ => (currentCount, totalCount, garbage)
-        }
+    def countInGarbage(current: Char, count: Long, garbage: Boolean): Long = {
+      val (newCount, newGarbage) = (current, garbage) match {
+        case ('!', _) => { input.next() }; (count, garbage)
+        case ('>', true) => (count, false)
+        case (_, true) => (count + 1, true)
+        case ('<', false) => (count, true)
+        case (_, _) => (count, garbage)
       }
-      if (!input.hasNext) newTotalCount
-      else {
-        countInGarbage(input.next(), newCurrentCount, newTotalCount, newGarbage)
-      }
+      if (input.hasNext) countInGarbage(input.next(), newCount, newGarbage)
+      else newCount
     }
-    countInGarbage(input.next(), 0, 0, false)
+    countInGarbage(input.next, 0, false)
   }
 }
