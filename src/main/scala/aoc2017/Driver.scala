@@ -35,8 +35,8 @@ object Driver extends App {
 //  println(s"Day 8 a: ${Day8.solution1(day8Input)}")
 //  println(s"Day 8 b: ${Day8.solution2(day8Input)}")
 
-  val day9Input = Source.fromFile("src/main/resources/input-day9.txt").getLines().next().toIterator
-  println(s"Day 9 a: ${Day9.solution1(day9Input)}")
-  println(s"Day 9 b: ${Day9.solution2(day9Input)}")
+  val day9Input = Source.fromFile("src/main/resources/input-day9.txt").getLines().next()
+  println(s"Day 9 a: ${Day9.solution1(day9Input.toIterator)}")
+  println(s"Day 9 b: ${Day9.solution2(day9Input.toIterator)}")
 
 }
