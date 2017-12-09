@@ -12,60 +12,56 @@ case class Node(
 object Day7 {
 
   val ARROW = "->"
-  val nodeRegex = raw"(\w+) \((\d+)\)".r
+  // ?: is a non-capturing group
+  // by doing that, the outer ( -> ...) group is not captured
+  // and everything that matches (, \w+)* is not captured either
+  // because of that, we can just match 3 specific things
+  // makes the matcher have exactly 3 groups, makes the parser function so clean
   val nodeWithChildrenRegex = """(\w+) \((\d+)\)(?: -> (\w+(?:, \w+)*))?""".r
 
-  def parseGraph2(nodeStrs: Seq[String]): Map[String, Node] = {
+  def parseGraph(nodeStrs: Seq[String]): Map[String, Node] = {
     nodeStrs.map {
       case nodeWithChildrenRegex(nodeId, weightStr, nullableChildrenStr) =>
-        Node(
+        nodeId -> Node(
           nodeId,
           weightStr.toInt,
-          Option(nullableChildrenStr)
+          Option(nullableChildrenStr).toSeq.flatMap(_.split(", "))
         )
-    }
-  }
-
-  def parseGraph(nodeStrs: Seq[String]): Map[String, Node] = {
-    val (nodesWithChildren, nodesWithoutChildren) = nodeStrs.partition(_.contains(ARROW))
-
-    val nodesByNodeIdWithoutChildren: Map[String, Node] = nodesWithoutChildren.map {
-      case nodeRegex(nodeId, weight) => nodeId -> Node(nodeId, weight.toInt)
     }(collection.breakOut)
-
-    nodesWithChildren.foldLeft(nodesByNodeIdWithoutChildren) { case (nodesByNodeId, str) =>
-      val (parentStr, childrenStr) = str.splitAt(str.indexOfSlice(ARROW))
-      val (nodeId, weight) = parentStr.trim match {
-        case nodeRegex(nodeId, weightStr) => nodeId -> weightStr.toInt
-      }
-      val children = childrenStr.substring(ARROW.length()).split(",").map(_.trim)
-      nodesByNodeId + (nodeId -> Node(nodeId, weight, children))
-    }
   }
 
-  def parseParentsByChildId(nodeStrs: Seq[String]): Map[String, String] = {
-    nodeStrs
-      .filter(_.contains(ARROW))
-      .flatMap { str =>
-        val (parentStr, childrenStr) = str.splitAt(str.indexOfSlice(ARROW))
-        val (nodeId, _) = parentStr.trim match {
-          case nodeRegex(nodeId, weightStr) => nodeId -> weightStr.toInt
-        }
-        childrenStr.substring(ARROW.length()).split(",")
-          .map(_.trim)
-          .map(_ -> nodeId)
-      }(collection.breakOut)
-  }
-
+//  val nodeRegex = raw"(\w+) \((\d+)\)".r
+//  def parseGraph(nodeStrs: Seq[String]): Map[String, Node] = {
+//    val (nodesWithChildren, nodesWithoutChildren) = nodeStrs.partition(_.contains(ARROW))
+//
+//    val nodesByNodeIdWithoutChildren: Map[String, Node] = nodesWithoutChildren.map {
+//      case nodeRegex(nodeId, weight) => nodeId -> Node(nodeId, weight.toInt)
+//    }(collection.breakOut)
+//
+//    nodesWithChildren.foldLeft(nodesByNodeIdWithoutChildren) { case (nodesByNodeId, str) =>
+//      val (parentStr, childrenStr) = str.splitAt(str.indexOfSlice(ARROW))
+//      val (nodeId, weight) = parentStr.trim match {
+//        case nodeRegex(nodeId, weightStr) => nodeId -> weightStr.toInt
+//      }
+//      val children = childrenStr.substring(ARROW.length()).split(",").map(_.trim)
+//      nodesByNodeId + (nodeId -> Node(nodeId, weight, children))
+//    }
+//  }
 
   def solution1(nodeStrs: Seq[String]) = {
     @tailrec
     def traverse(graph: Map[String, String], nodeId: String): String = graph.get(nodeId) match {
-        case None => nodeId
-        case Some(parentId) => traverse(graph, parentId)
-      }
-    val parentsByChildId = parseParentsByChildId(nodeStrs)
-    traverse(parentsByChildId, parentsByChildId.head._1)
+      case None => nodeId
+      case Some(parentId) => traverse(graph, parentId)
+    }
+
+    val graph = parseGraph(nodeStrs)
+    val parentIdsByChildId = graph.flatMap {
+      case (nodeId, node) =>
+        node.childrenIds.map(_ -> nodeId)
+    }
+
+    traverse(parentIdsByChildId, parentIdsByChildId.head._1)
   }
 
   def solution2(nodeStrs: Seq[String]) = {
