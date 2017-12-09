@@ -3,26 +3,16 @@ package aoc2017
 object Day9 {
   def solution1(input: Iterator[Char]) = {
     def countScore(current: Char, currentScore: Long, totalScore: Long, garbage: Boolean): Long = {
-      val (newCurrentScore, newTotalScore) = if (!garbage) {
-        current match {
-          case '{' => (currentScore + 1, totalScore)
-          case '}' => (currentScore - 1, totalScore + currentScore)
-          case _ => (currentScore, totalScore)
-        }
-      } else (currentScore, totalScore)
-      if (input.hasNext) {
-        countScore(
-          current = {
-            if (current == '!') {
-              val _ = input.next
-            }
-            input.next
-          },
-          currentScore = newCurrentScore,
-          totalScore = newTotalScore,
-          garbage = if (current == '<') true else if (current == '>') false else garbage
-        )
-      } else newTotalScore
+      val (newCurrentScore, newTotalScore, newGarbage) = current match {
+        case '!' => input.next(); (currentScore, totalScore, garbage)
+        case '{' if !garbage => (currentScore + 1, totalScore, garbage)
+        case '}' if !garbage => (currentScore - 1, totalScore + currentScore, garbage)
+        case '<' if !garbage => (currentScore, totalScore, !garbage)
+        case '>' if garbage => (currentScore, totalScore, !garbage)
+        case _ => (currentScore, totalScore, garbage)
+      }
+      if (input.hasNext) countScore(input.next(), newCurrentScore, newTotalScore, newGarbage)
+      else newTotalScore
     }
     countScore(input.next(), 0, 0, false)
   }
@@ -30,7 +20,7 @@ object Day9 {
   def solution2(input: Iterator[Char]) = {
     def countInGarbage(current: Char, count: Long, garbage: Boolean): Long = {
       val (newCount, newGarbage) = (current, garbage) match {
-        case ('!', _) => { input.next() }; (count, garbage)
+        case ('!', _) => input.next(); (count, garbage)
         case ('>', true) => (count, false)
         case (_, true) => (count + 1, true)
         case ('<', false) => (count, true)
