@@ -60,6 +60,7 @@ object Day3 {
   }
 
   class Grid {
+    import Grid._
     val state = mutable.Map(Coordinate(0, 0) -> 1)
 
     def isOutOfBounds(coordinate: Coordinate, maxPos: Int) = {
@@ -72,6 +73,14 @@ object Day3 {
 
     def nextCounterClockWiseDirection(direction: Coordinate) = Coordinate(-direction.y, direction.x)
 
+
+
+    def coordinateSum(coordinate: Coordinate) = {
+      neighbors.map(coordinate.move).flatMap(state.get).sum
+    }
+  }
+
+  object Grid {
     val neighbors = Seq(
       Coordinate(1, 0),
       Coordinate(1, 1),
@@ -82,10 +91,6 @@ object Day3 {
       Coordinate(0, -1),
       Coordinate(1, -1)
     )
-
-    def coordinateSum(coordinate: Coordinate) = {
-      neighbors.map(coordinate.move).flatMap(state.get).sum
-    }
   }
 
   case class Coordinate(x: Int, y: Int) {
