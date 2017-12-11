@@ -1,23 +1,39 @@
 package aoc2017
 
 object Day10 {
-  def solution1(lengths: Seq[Int], maxNum: Int) = {
-    def knotHash(xs: Seq[Int], lengths: Seq[Int], currentPos: Int, skip: Int): Seq[Int] = {
-      if (lengths.isEmpty) xs
-      else {
-        val length = lengths.head
-        val reverseIndices = (0 until length).map(i => (i + currentPos) % maxNum)
-        val reversedNums = reverseIndices.collect(xs).reverse
-        val rotated = reverseIndices.zip(reversedNums).foldLeft(xs){ case (list, (idx, current)) =>
-          list.updated(idx, current)
-        }
-        knotHash(rotated, lengths.tail, (currentPos + length + skip) % maxNum, skip + 1)
+  case class KnotHashParam(
+    nums: Seq[Int],
+    currentPos: Int,
+    skip: Int
+  )
+
+  val initKnotHashParam = KnotHashParam((0 until 256), 0, 0)
+
+  def knotHash(lengths: Seq[Int], knotHashParam: KnotHashParam): KnotHashParam = {
+    if (lengths.isEmpty) knotHashParam
+    else {
+      val length = lengths.head
+      val reverseIndices = (0 until length).map(i => (i + knotHashParam.currentPos) % 256)
+      val reversedNums = reverseIndices.collect(knotHashParam.nums).reverse
+      val rotated = reverseIndices.zip(reversedNums).foldLeft(knotHashParam.nums){ case (list, (idx, current)) =>
+        list.updated(idx, current)
       }
+      knotHash(
+        lengths.tail,
+        KnotHashParam(rotated, (knotHashParam.currentPos + length + knotHashParam.skip) % 256, knotHashParam.skip + 1)
+      )
     }
-    knotHash(0 until maxNum, lengths, 0, 0).take(2).product
   }
 
-  def solution2(xs: Seq[Int]) = {
+  def solution1(lengths: Seq[Int]) = {
+    knotHash(lengths, initKnotHashParam).nums.take(2).product
+  }
 
+  def solution2(lengths: Seq[Int]) = {
+    val sparseHash = (0 until 64).foldLeft(initKnotHashParam) { case (knotHashParam, _) =>
+      knotHash(lengths, knotHashParam)
+    }
+    val denseHash = sparseHash.nums.grouped(16).map(_.reduceLeft(_ ^ _))
+    denseHash.map(i => Integer.toString(i, 16)).map(i => if (i.length == 1) s"0$i" else i).reduceLeft(_ + _)
   }
 }

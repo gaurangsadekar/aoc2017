@@ -39,7 +39,9 @@ object Driver extends App {
 //  println(s"Day 9 a: ${Day9.solution1(day9Input.toIterator)}")
 //  println(s"Day 9 b: ${Day9.solution2(day9Input.toIterator)}")
 
-  val day10Input = Seq(147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70)
-  println(s"Day 10 a: ${Day10.solution1(day10Input, 256)}")
-  println(s"Day 10 b: ${Day10.solution2()}")
+  val day10AInput = Seq(147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70)
+  val day10BInput = "147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70".toSeq.map(_.toInt) ++ Seq(17, 31, 73, 47, 23)
+
+  println(s"Day 10 a: ${Day10.solution1(day10AInput)}")
+  println(s"Day 10 b: ${Day10.solution2(day10BInput)}")
 }
