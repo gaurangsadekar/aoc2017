@@ -21,7 +21,7 @@ object Day11 {
   def solution2(steps: Seq[String]) = {
     steps.foldLeft(List(Coordinate(0, 0))){ case (positions, dirStr) =>
       positions.head.move(directionStrToCoordinate(dirStr)) :: positions
-    }
+    }.map(distance).max
   }
 
   val directionStrToCoordinate = Map(

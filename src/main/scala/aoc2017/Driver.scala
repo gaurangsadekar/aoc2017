@@ -47,5 +47,4 @@ object Driver extends App {
   val day11Input = Source.fromFile("src/main/resources/input-day11.txt").getLines().next().split(",")
   println(s"Day 11 a: ${Day11.solution1(day11Input)}")
   println(s"Day 11 b: ${Day11.solution2(day11Input)}")
-  Seq("ne", "ne", "nw", "nw", "n")
 }
