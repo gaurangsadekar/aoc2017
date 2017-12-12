@@ -22,15 +22,18 @@ object Day12 {
     }
   }
 
+
+  val emptyVertexSet = Set.empty[Vertex]
+
   def solution1(graph: Graph): Int = {
-    connectedComponent(graph)(Set.empty, 0).size
+    connectedComponent(graph)(emptyVertexSet, 0).size
   }
 
   def solution2(graph: Graph) = {
-    graph.keys.foldLeft((Set.empty[Vertex], 0)){ case ((visited, numComponents), vertex) =>
+    graph.keys.foldLeft(emptyVertexSet -> 0){ case ((visited, numComponents), vertex) =>
       val (currentConnectedComponent, newComponent) = if (!visited(vertex))
-        connectedComponent(graph)(Set.empty, vertex) -> 1
-      else Set.empty[Vertex] -> 0
+        connectedComponent(graph)(emptyVertexSet, vertex) -> 1
+      else emptyVertexSet -> 0
       (visited ++ currentConnectedComponent) -> (numComponents + newComponent)
     }._2
   }
