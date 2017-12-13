@@ -55,6 +55,8 @@ object Driver extends App {
   val day13Input = Source.fromFile("src/main/resources/input-day13.txt").getLines()
     .map(_.split(": ").map(_.toInt))
     .map { case Array(depth, range) => depth -> range }
-    .toSeq
+    .toMap
+
   println(s"Day 13 a: ${Day13.solution1(day13Input)}")
+  println(s"Day 13 b: ${Day13.solution2(day13Input)}")
 }
