@@ -48,7 +48,13 @@ object Driver extends App {
 //  println(s"Day 11 a: ${Day11.solution1(day11Input)}")
 //  println(s"Day 11 b: ${Day11.solution2(day11Input)}")
 
-  val day12Input = Day12.parseAdjacencyList(Source.fromFile("src/main/resources/input-day12.txt").getLines().toSeq)
-  println(s"Day 12 a: ${Day12.solution1(day12Input)}")
-  println(s"Day 12 b: ${Day12.solution2(day12Input)}")
+//  val day12Input = Day12.parseAdjacencyList(Source.fromFile("src/main/resources/input-day12.txt").getLines().toSeq)
+//  println(s"Day 12 a: ${Day12.solution1(day12Input)}")
+//  println(s"Day 12 b: ${Day12.solution2(day12Input)}")
+
+  val day13Input = Source.fromFile("src/main/resources/input-day13.txt").getLines()
+    .map(_.split(": ").map(_.toInt))
+    .map { case Array(depth, range) => depth -> range }
+    .toSeq
+  println(s"Day 13 a: ${Day13.solution1(day13Input)}")
 }
