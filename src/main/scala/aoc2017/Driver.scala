@@ -40,7 +40,7 @@ object Driver extends App {
 //  println(s"Day 9 b: ${Day9.solution2(day9Input.toIterator)}")
 
 //  val day10AInput = Seq(147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70)
-//  val day10BInput = "147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70".toSeq.map(_.toInt) ++ Seq(17, 31, 73, 47, 23)
+//  val day10BInput = Day10.convertToKnotHashInput("147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70")
 //  println(s"Day 10 a: ${Day10.solution1(day10AInput)}")
 //  println(s"Day 10 b: ${Day10.solution2(day10BInput)}")
 
@@ -52,11 +52,15 @@ object Driver extends App {
 //  println(s"Day 12 a: ${Day12.solution1(day12Input)}")
 //  println(s"Day 12 b: ${Day12.solution2(day12Input)}")
 
-  val day13Input = Source.fromFile("src/main/resources/input-day13.txt").getLines()
-    .map(_.split(": ").map(_.toInt))
-    .map { case Array(depth, range) => depth -> range }
-    .toMap
+//  val day13Input = Source.fromFile("src/main/resources/input-day13.txt").getLines()
+//    .map(_.split(": ").map(_.toInt))
+//    .map { case Array(depth, range) => depth -> range }
+//    .toMap
+//
+//  println(s"Day 13 a: ${Day13.solution1(day13Input)}")
+//  println(s"Day 13 b: ${Day13.solution2(day13Input)}")
 
-  println(s"Day 13 a: ${Day13.solution1(day13Input)}")
-  println(s"Day 13 b: ${Day13.solution2(day13Input)}")
+  val day14Input = "amgozmfv"
+//  println(s"Day 14 a: ${Day14.solution1(day14Input)}")
+  println(s"Day 14 b: ${Day14.solution2(day14Input)}")
 }
