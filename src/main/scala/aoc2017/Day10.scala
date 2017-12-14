@@ -29,16 +29,12 @@ object Day10 {
     knotHash(lengths, initKnotHashParam).nums.take(2).product
   }
 
-  def fullKnotHash(lengths: Seq[Int]) = {
+  def solution2(lengths: Seq[Int]) = {
     val sparseHash = (0 until 64).foldLeft(initKnotHashParam) { case (knotHashParam, _) =>
       knotHash(lengths, knotHashParam)
     }
     val denseHash = sparseHash.nums.grouped(16).map(_.reduceLeft(_ ^ _))
     denseHash
-  }
-
-  def solution2(lengths: Seq[Int]) = {
-    fullKnotHash(lengths)
       .map(i => Integer.toString(i, 16))
       .map(i => if (i.length == 1) s"0$i" else i)
       .reduceLeft(_ + _)
