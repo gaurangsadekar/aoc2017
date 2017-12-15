@@ -60,7 +60,11 @@ object Driver extends App {
 //  println(s"Day 13 a: ${Day13.solution1(day13Input)}")
 //  println(s"Day 13 b: ${Day13.solution2(day13Input)}")
 
-  val day14Input = "amgozmfv"
+//  val day14Input = "amgozmfv"
 //  println(s"Day 14 a: ${Day14.solution1(day14Input)}")
-  println(s"Day 14 b: ${Day14.solution2(day14Input)}")
+//  println(s"Day 14 b: ${Day14.solution2(day14Input)}")
+
+  val day15Input = 591 -> 393
+  println(s"Day 15 a: ${Day15.solution1(day15Input)}")
+  println(s"Day 15 b: ${Day15.solution2(day15Input)}")
 }
