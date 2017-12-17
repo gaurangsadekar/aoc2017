@@ -64,7 +64,13 @@ object Driver extends App {
 //  println(s"Day 14 a: ${Day14.solution1(day14Input)}")
 //  println(s"Day 14 b: ${Day14.solution2(day14Input)}")
 
-  val day15Input = 591 -> 393
-  println(s"Day 15 a: ${Day15.solution1(day15Input)}")
-  println(s"Day 15 b: ${Day15.solution2(day15Input)}")
+//  val day15Input = 591 -> 393
+//  println(s"Day 15 a: ${Day15.solution1(day15Input)}")
+//  println(s"Day 15 b: ${Day15.solution2(day15Input)}")
+
+  val day16Input = Day16.parseSideEffectDanceMoves(
+    Source.fromFile("src/main/resources/input-day16.txt").getLines().next().split(",")
+  )
+//  println(s"Day 16 a: ${Day16.solution1(day16Input)}")
+  println(s"Day 16 b: ${Day16.solution2(day16Input)}")
 }
